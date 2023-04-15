@@ -34,14 +34,14 @@ residue = 0;
 iter = 0;
 x = 10000000; % So that initially the norm(x) in the while loop is large 
 
+
 % Iterative minimization
 %while(YOUR STOPPING CRITERION HERE)% 
-while(1 & (norm(x))> 0.01)
+while(1 & (norm(x)> 0.01) & (iter <= 200))
 		% Current patch
     WarpedImage = WarpImageSL3(CurrentImage, ReferenceImage, Hnew);    
 
 	  % Patch error/residue in vector form
-    disp('--------------------------------------')
     residues = double(ReferenceImage.I(WarpedImage.index)) - WarpedImage.I(WarpedImage.index);
 
 		switch tracking_param.estimation_method
@@ -72,9 +72,12 @@ while(1 & (norm(x))> 0.01)
 		% Compute unknown parameters x 
     A = [x(5),x(3),x(1); x(4),-x(5)-x(6),x(2); x(7),x(8),x(6)]; 
     Hnew = Hnew*expm(A); % Compute the update of the Homography matrix using the exponential map
-
+        
+        
+    
 		if(tracking_param.display)
-			figure(1); 
+			fig = figure(1);
+            set(fig, 'Position', [100, 100, 1280, 720]); % set figure size to 1280 x 720 pixels
 			subplot(2,2,4); imagesc(WarpedImage.I); colormap(gray); title('Warped Image'); axis off;  
 			W = zeros(ReferenceImage.sIv, ReferenceImage.sIu);
 			W(WarpedImage.index) = weights;
@@ -82,12 +85,33 @@ while(1 & (norm(x))> 0.01)
 			subplot(2,2,2); image(abs(WarpedImage.I-double(ReferenceImage.I)).*WarpedImage.Mask.*W); 
 			colormap(gray); 	title('Error Image'); 	axis off;  
 			%keyboard;
+            
+
+%             figure('Name','norm(x)','NumberTitle','off');
+%             % Add the new point to the animated line
+%             addpoints(hLine, iter, norm(x));
+% 
+%             % Update the plot
+%             drawnow;
+            
 		end; 
 
 		iter = iter+1;
+        
+        
+		if(tracking_param.display)       
 
-		if(tracking_param.display)
-			norm(x)
+			norm_x(iter) = norm(x);
+            
+            figure(2);
+            % Add the new point to the animated line
+            plot(norm_x(:),'r');
+            title('norm x')
+
+            % Update the plot
+            drawnow;
+            pause(0.2)
+           
 		end;
 end;
 
@@ -97,8 +121,8 @@ if(tracking_param.display)
 	WarpedImage.polygon = Hnew*ReferenceImage.polygon; 
 	WarpedImage.polygon = WarpedImage.polygon./repmat(WarpedImage.polygon(3,:),3,1);
 
-	norm(x);
-	iter;
+	norm(x)
+	iter
 
 end
 

@@ -137,8 +137,8 @@ capture_params.suffix = '.pgm';
 capture_params.string_size= 4;
 capture_params.first = 1;
 capture_params.last = 100;
-capture_params.savepolygon = 1;
-capture_params.loadpolygon = 0;
+capture_params.savepolygon = 0;
+capture_params.loadpolygon = 1;
 
 
 [H] = mainTrackImageSL3(capture_params, tracking_params);

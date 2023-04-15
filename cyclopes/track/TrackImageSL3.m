@@ -34,11 +34,10 @@ residue = 0;
 iter = 0;
 x = 10000000; % So that initially the norm(x) in the while loop is large 
 
-hLine = animatedline;
 
 % Iterative minimization
 %while(YOUR STOPPING CRITERION HERE)% 
-while(1 & (norm(x))> 0.01)
+while(1 & (norm(x)> 0.01) & (iter <= 200))
 		% Current patch
     WarpedImage = WarpImageSL3(CurrentImage, ReferenceImage, Hnew);    
 
@@ -78,7 +77,7 @@ while(1 & (norm(x))> 0.01)
     
 		if(tracking_param.display)
 			fig = figure(1);
-            set(fig, 'Position', [100, 100, 1920, 1080]); % set figure size to 1200 x 800 pixels
+            set(fig, 'Position', [100, 100, 1280, 720]); % set figure size to 1280 x 720 pixels
 			subplot(2,2,4); imagesc(WarpedImage.I); colormap(gray); title('Warped Image'); axis off;  
 			W = zeros(ReferenceImage.sIv, ReferenceImage.sIu);
 			W(WarpedImage.index) = weights;
@@ -87,22 +86,27 @@ while(1 & (norm(x))> 0.01)
 			colormap(gray); 	title('Error Image'); 	axis off;  
 			%keyboard;
             
-
-%             figure('Name','norm(x)','NumberTitle','off');
-%             % Add the new point to the animated line
-%             addpoints(hLine, iter, norm(x));
-% 
-%             % Update the plot
-%             drawnow;
             
 		end; 
 
 		iter = iter+1;
         
-		if(tracking_param.display)
+        
+		if(tracking_param.display)       
 
-			norm(x)
-            iter
+			norm_x(iter) = norm(x);
+            
+            fig2 = figure(2);
+            set(fig2, 'Position', [100, 100, 1280, 720]); % set figure size to 1280 x 720 pixels
+            % Add the new point to the animated line
+            plot(norm_x(:),'r');
+            title('Euclidean norm of x')
+            xlabel('iteraction') 
+            ylabel('norm(x)') 
+
+            % Update the plot
+            drawnow;
+            pause(0.3)
            
 		end;
 end;
