@@ -162,6 +162,13 @@ for(k=capture_params.first+1:capture_params.last)
         drawnow;
         %pause(0.5)
         
+        if (tracking_param.changereference)
+            ReferenceImage.I = CurrentImage.I;
+            ReferenceImage.polygon = WarpedImage.polygon;
+            ReferenceImage.index = WarpedImage.index;
+            ReferenceImage.Mask = WarpedImage.Mask;
+        end;
+        
 		if(tracking_param.display)
 			figure(1); hold on;	
 			DrawImagePoly('Warped Current Image', 1, CurrentImage.I, WarpedImage.polygon);
@@ -199,34 +206,35 @@ tracking_params.robust_method='tukey'; % Can be 'huber' or 'tukey' for the momen
 tracking_params.scale_threshold = 1; % 1 hubergrey level
 tracking_params.size_x = 8; % number of parameters to estimate
 
+tracking_params.changereference = 1; %1 to change the reference or 0 to not change.
 
 % Change for your paths here
 % capture_params.homedir = '/home/yosef/Repositories/2023_UTOULON_VSLAM/cyclopes/'
 % capture_params.data_dir = '/home/yosef/Repositories/2023_UTOULON_VSLAM/Versailles_canyon/Left/'
 
-% capture_params.homedir = '/home/yosef/Repositories/VSLAM/cyclopes/'
-% capture_params.data_dir = '/home/yosef/Repositories/VSLAM/Versailles_canyon/Left/'
-
 capture_params.homedir = '/home/yosef/Repositories/VSLAM/cyclopes/'
-capture_params.data_dir = '/home/yosef/Repositories/VSLAM/IMAGES_smallRGB/'
+capture_params.data_dir = '/home/yosef/Repositories/VSLAM/Versailles_canyon/Left/'
+
+% capture_params.homedir = '/home/yosef/Repositories/VSLAM/cyclopes/'
+% capture_params.data_dir = '/home/yosef/Repositories/VSLAM/IMAGES_smallRGB/'
 
 %capture_params.data_dir = [getenv('DIR_DATA'), '/../data/Versailles/Versailles_canyon/Left/']; 
 %capture_params.homedir = getenv('DIR_CYCLOPES');
 
 
 % Versailles canyon
-% capture_params.prefix = 'ima';
-% capture_params.suffix = '.pgm';
+capture_params.prefix = 'ima';
+capture_params.suffix = '.pgm';
 
 
 % smallRGB
-capture_params.prefix = 'img';
-capture_params.suffix = '.png';
+% capture_params.prefix = 'img';
+% capture_params.suffix = '.png';
 
 capture_params.string_size= 4;
-capture_params.first = 665;
-capture_params.last = 1000;
-capture_params.savepolygon = 0;
+capture_params.first = 0;
+capture_params.last = 100;
+capture_params.savepolygon = 1;
 capture_params.loadpolygon = 0;
 
 
