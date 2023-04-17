@@ -38,11 +38,7 @@ x = 10000000; % So that initially the norm(x) in the while loop is large
 norm_x = zeros(1,tracking_param.max_iter);
 norm_res = zeros(1,tracking_param.max_iter);
 
-
-% Convergence criterion
 bool_res = 1;
-tol = 1e-4;
-
 % Iterative minimization
 %while(YOUR STOPPING CRITERION HERE)%
 % (norm(x)> 0.01) & (iter <= 100)
@@ -50,8 +46,7 @@ tol = 1e-4;
 % (norm(x)> tracking_param.max_x) & (iter <= tracking_param.max_iter) & (norm(rescale(residues))< tracking_param.max_err)
 % (((norm(x)> tracking_param.max_x) || (norm(rescale(residues))< tracking_param.max_err)) && (iter <= tracking_param.max_iter))
 % ((bool_norm == 1) && (norm(rescale(residues))< tracking_param.max_err) && (iter <= tracking_param.max_iter))
-
-while(((norm(x)> tracking_param.max_x) || (norm(rescale(residues))< tracking_param.max_err)&&(bool_res == 1)) && (iter <= tracking_param.max_iter)) 
+while(((norm(x)> tracking_param.max_x) || (norm(rescale(residues))< tracking_param.max_err)&&()) && (iter <= tracking_param.max_iter)) 
 		% Current patch
     WarpedImage = WarpImageSL3(CurrentImage, ReferenceImage, Hnew);    
 
@@ -136,15 +131,16 @@ while(((norm(x)> tracking_param.max_x) || (norm(rescale(residues))< tracking_par
            
 		end;
         
-        % Check the convergence criterion        
-        if (iter > 1)
-            if abs(norm_res(iter) - norm_res(iter-1)) < tol
+%         if (iter > 1)
+%             if abs(x - x_prev) < tol
                 bool_res = 0;
-            end;
-            
-        end;
+        end
+%             
+%         end;
         
-
+        
+        % Check the convergence criterion
+        
         iter = iter+1;
 
 end;

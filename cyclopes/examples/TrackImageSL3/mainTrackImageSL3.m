@@ -90,6 +90,8 @@ resi_matrix = zeros(n_frames, tracking_param.max_iter);
 % res_per_frame = zeros(1, n_frames );
 % iters_per_frame = zeros(1, n_frames );
 
+% Start the timer
+tic;
 
 % Loop through sequence
 for(k=capture_params.first+1:capture_params.last)
@@ -173,6 +175,10 @@ for(k=capture_params.first+1:capture_params.last)
 
 end;
 
+% Stop the timer and display the elapsed time
+elapsed_time = toc;
+disp(['Elapsed time: ' num2str(elapsed_time/60) ' min']);
+
 save('/home/yosef/Desktop/results/data.mat', 'x_per_frame', 'res_per_frame', 'iters_per_frame');
 
 
@@ -189,7 +195,7 @@ tracking_params.max_x = 0.1;
 tracking_params.display = 1;
 tracking_params.estimation_method = 1; % 1 = Reference Jacobian, 2 = Current Jacobian, 3 = ESM 
 tracking_params.mestimator = 0;
-tracking_params.robust_method='huber'; % Can be 'huber' or 'tukey' for the moment
+tracking_params.robust_method='tukey'; % Can be 'huber' or 'tukey' for the moment
 tracking_params.scale_threshold = 1; % 1 grey level
 tracking_params.size_x = 8; % number of parameters to estimate
 
@@ -201,13 +207,25 @@ tracking_params.size_x = 8; % number of parameters to estimate
 capture_params.homedir = '/home/yosef/Repositories/VSLAM/cyclopes/'
 capture_params.data_dir = '/home/yosef/Repositories/VSLAM/Versailles_canyon/Left/'
 
+% capture_params.homedir = '/home/yosef/Repositories/VSLAM/cyclopes/'
+% capture_params.data_dir = '/home/yosef/Repositories/VSLAM/IMAGES_smallRGB/'
+
 %capture_params.data_dir = [getenv('DIR_DATA'), '/../data/Versailles/Versailles_canyon/Left/']; 
-%capture_params.homedir = getenv('DIR_CYCLOPES'); 
+%capture_params.homedir = getenv('DIR_CYCLOPES');
+
+
+% Versailles canyon
 capture_params.prefix = 'ima';
 capture_params.suffix = '.pgm';
+
+
+% smallRGB
+% capture_params.prefix = 'img';
+% capture_params.suffix = '.png';
+
 capture_params.string_size= 4;
 capture_params.first = 1;
-capture_params.last = 4;
+capture_params.last = 100;
 capture_params.savepolygon = 0;
 capture_params.loadpolygon = 1;
 
