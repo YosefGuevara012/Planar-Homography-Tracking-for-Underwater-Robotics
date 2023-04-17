@@ -95,9 +95,9 @@ resi_matrix = zeros(n_frames, tracking_param.max_iter);
 for(k=capture_params.first+1:capture_params.last)
 		i = i+1;
         
-        disp('Frame');
-        ref_frame = i-1
-
+        disp('Hello, world!');
+        ref_frame = i-1;
+        disp('Hello, world!');
 	
 		image_num_string = sprintf(['%0', num2str(capture_params.string_size), 'd'], k);
 		file_I = [capture_params.data_dir, capture_params.prefix, image_num_string, capture_params.suffix];
@@ -113,18 +113,6 @@ for(k=capture_params.first+1:capture_params.last)
 		% Iterative non-linear homography estimation
     [H(:,:,i), WarpedImage, norm_matrix(i,:), resi_matrix(i,:), iters_per_frame(i), x_per_frame(i),res_per_frame(i)] = TrackImageSL3(ReferenceImage, CurrentImage, H(:,:,i-1), tracking_param);
 		H(:,:,i)
-        
-        
-        
-        
-        % Print current values:
-        
-        disp('x_per_frame');
-        x_per_frame(i)
-        disp('res_per_frame');
-        res_per_frame(i)
-        disp('iters_per_frame');
-        iters_per_frame(i)
         
         % Save figure 1 as an image
         
